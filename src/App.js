@@ -1,7 +1,12 @@
 import './App.css';
+import DadJokes from './DadJokes';
 
 function App() {
-  return <div className="App">Test</div>;
+  return (
+    <div className="App">
+      <DadJokes />
+    </div>
+  );
 }
 
 export default App;
