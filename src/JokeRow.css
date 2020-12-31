@@ -9,7 +9,7 @@
 
 @media (min-width: 600px){
   .JokeRow {
-    padding: 1.3em;
+    padding: 1em;
   }
 }
 
@@ -17,6 +17,25 @@
 .JokeRow-ratingContainer {
   display: flex;
   align-items: center;
+}
+
+.JokeRow-ratingBtn {
+  border: none;
+  background: none;
+}
+
+.JokeRow-ratingBtn svg {
+  width: 25px;
+  height: auto;
+  transition: color .1s linear;
+}
+
+.JokeRow-ratingBtn:hover .thumbsUp {
+  color: rgb(22, 187, 22);
+}
+
+.JokeRow-ratingBtn:hover .thumbsDown {
+  color: rgb(187, 88, 22);
 }
 
 .JokeRow-joke {
