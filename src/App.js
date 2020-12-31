@@ -3,9 +3,9 @@ import DadJokes from './DadJokes';
 
 function App() {
   return (
-    <div className="App">
+    <main className="App">
       <DadJokes />
-    </div>
+    </main>
   );
 }
 
