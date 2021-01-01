@@ -26,10 +26,11 @@
   width: 40px;
   height: 40px;
   border-radius: 100%;
-  border: 2px solid rgb(252, 167, 55);
+  border: 3px solid rgb(252, 167, 55);
   display: grid;
   place-items: center;
   background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,.1), 0 5px 15px rgba(0,0,0,.2);
 }
 
 .JokeRow-ratingBtn {

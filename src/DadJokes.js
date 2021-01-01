@@ -15,6 +15,8 @@ class DadJokes extends Component {
       alreadySeenJokeIds: [],
       hasLoaded: false,
     };
+
+    this.changeRating = this.changeRating.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +48,20 @@ class DadJokes extends Component {
     }));
   }
 
+  changeRating(val, id) {
+    this.setState((st) => {
+      const updatedJokes = st.jokes.map((joke) => {
+        if (joke.id === id) {
+          return { ...joke, rating: joke.rating + val };
+        }
+        return joke;
+      });
+      return {
+        jokes: updatedJokes,
+      };
+    });
+  }
+
   render() {
     const { jokes, hasLoaded } = this.state;
     const dadJokeHtml = (
@@ -61,7 +77,13 @@ class DadJokes extends Component {
         </header>
         <div className="DadJokes-jokeTable">
           {jokes.map((joke) => (
-            <JokeRow key={joke.id} joke={joke.joke} rating={joke.rating} />
+            <JokeRow
+              key={joke.id}
+              id={joke.id}
+              joke={joke.joke}
+              rating={joke.rating}
+              changeRating={this.changeRating}
+            />
           ))}
         </div>
       </section>
