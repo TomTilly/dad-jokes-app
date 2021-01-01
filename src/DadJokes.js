@@ -13,6 +13,7 @@ class DadJokes extends Component {
     this.state = {
       jokes: [],
       alreadySeenJokeIds: [],
+      hasLoaded: false,
     };
   }
 
@@ -41,12 +42,13 @@ class DadJokes extends Component {
     this.setState((st) => ({
       jokes,
       alreadySeenJokeIds: [...st.alreadySeenJokeIds, ...newIds],
+      hasLoaded: true,
     }));
   }
 
   render() {
-    const { jokes } = this.state;
-    return (
+    const { jokes, hasLoaded } = this.state;
+    const dadJokeHtml = (
       <section className="DadJokes">
         <header className="DadJokes-header">
           <h1 className="DadJokes-heading">
@@ -64,6 +66,13 @@ class DadJokes extends Component {
         </div>
       </section>
     );
+    const loadingHtml = (
+      <div className="DadJokes-loading">
+        <img className="DadJokes-loadingIcon" src={joy} alt="" />
+        Loading...
+      </div>
+    );
+    return hasLoaded ? dadJokeHtml : loadingHtml;
   }
 }
 
