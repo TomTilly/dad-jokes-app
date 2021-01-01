@@ -1,7 +1,8 @@
 .JokeRow {
-  background: white;
-  display: flex;
-  gap: 1em;
+  background: #efefef;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-gap: 1em;
   padding: .5em;
   align-items: center;
   border-bottom: 2px solid #efefef;
@@ -17,11 +18,23 @@
 .JokeRow-ratingContainer {
   display: flex;
   align-items: center;
+  color: #333;
+}
+
+.JokeRow-rating {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 2px solid #333;
+  display: grid;
+  place-items: center;
+  background: white;
 }
 
 .JokeRow-ratingBtn {
   border: none;
   background: none;
+  padding: .2em;
 }
 
 .JokeRow-ratingBtn svg {
