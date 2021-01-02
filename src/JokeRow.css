@@ -2,7 +2,7 @@
   background: #FFFFFF;
   display: grid;
   grid-template-columns: auto 1fr auto;
-  grid-gap: 1em;
+  grid-gap: 2em;
   padding: .5em;
   align-items: center;
   border-bottom: 2px solid #efefef;
@@ -11,7 +11,7 @@
 
 @media (min-width: 600px){
   .JokeRow {
-    padding: 1em;
+    padding: .3em 1em;
   }
 }
 

@@ -42,17 +42,15 @@ class DadJokes extends Component {
 
   async set10UniqueJokes() {
     const options = { headers: { Accept: 'application/json' } };
-    let i = 0;
     const jokes = [];
     const newIds = [];
     const { alreadySeenJokeIds } = this.state;
     const { numJokesToGet } = this.props;
-    while (i < numJokesToGet) {
+    while (jokes.length < numJokesToGet) {
       const newJoke = await fetch(API_URL, options).then(checkStatusAndParse);
       const { id, joke } = newJoke;
       const isUnique = !alreadySeenJokeIds.includes(id) && !newIds.includes(id);
       if (isUnique) {
-        i += 1;
         jokes.push({ id, joke, rating: 0 });
         newIds.push(id);
       }
