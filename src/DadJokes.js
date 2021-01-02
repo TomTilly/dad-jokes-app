@@ -28,19 +28,19 @@ class DadJokes extends Component {
   componentDidMount() {
     const { jokes } = this.state;
     if (jokes.length === 0) {
-      this.set10UniqueJokes().catch((err) => {
+      this.fetch10Jokes().catch((err) => {
         console.log(err);
       });
     }
   }
 
   handleClick() {
-    this.set10UniqueJokes().catch((err) => {
+    this.fetch10Jokes().catch((err) => {
       console.error(err);
     });
   }
 
-  async set10UniqueJokes() {
+  async fetch10Jokes() {
     const options = { headers: { Accept: 'application/json' } };
     const jokes = [];
     const newIds = [];
@@ -55,12 +55,17 @@ class DadJokes extends Component {
         newIds.push(id);
       }
     }
-    localStorage.setItem('jokes', JSON.stringify(jokes));
-    this.setState((st) => ({
-      jokes,
-      alreadySeenJokeIds: [...st.alreadySeenJokeIds, ...newIds],
-      hasLoaded: true,
-    }));
+    this.setState(
+      (st) => ({
+        jokes: [...st.jokes, ...jokes].sort((a, b) => b.rating - a.rating),
+        alreadySeenJokeIds: [...st.alreadySeenJokeIds, ...newIds],
+        hasLoaded: true,
+      }),
+      () => {
+        const { jokes: newJokes } = this.state;
+        localStorage.setItem('jokes', JSON.stringify(newJokes));
+      }
+    );
   }
 
   changeRating(val, id) {
