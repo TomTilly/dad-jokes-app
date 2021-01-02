@@ -18,7 +18,7 @@ class DadJokes extends Component {
     this.state = {
       jokes: hasLocalStorage ? JSON.parse(localStorage.getItem('jokes')) : [],
       alreadySeenJokeIds: [],
-      hasLoaded: !!hasLocalStorage,
+      hasLoaded: hasLocalStorage,
     };
 
     this.changeRating = this.changeRating.bind(this);
