@@ -7,6 +7,10 @@ import { checkStatusAndParse } from './util';
 const API_URL = 'https://icanhazdadjoke.com/';
 
 class DadJokes extends Component {
+  static defaultProps = {
+    numJokesToGet: 10,
+  };
+
   constructor(props) {
     super(props);
 
@@ -32,7 +36,7 @@ class DadJokes extends Component {
 
   handleClick() {
     this.set10UniqueJokes().catch((err) => {
-      console.log(err);
+      console.error(err);
     });
   }
 
@@ -42,7 +46,8 @@ class DadJokes extends Component {
     const jokes = [];
     const newIds = [];
     const { alreadySeenJokeIds } = this.state;
-    while (i < 10) {
+    const { numJokesToGet } = this.props;
+    while (i < numJokesToGet) {
       const newJoke = await fetch(API_URL, options).then(checkStatusAndParse);
       const { id, joke } = newJoke;
       const isUnique = !alreadySeenJokeIds.includes(id) && !newIds.includes(id);
