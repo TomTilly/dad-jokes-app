@@ -18,7 +18,7 @@ class DadJokes extends Component {
     this.state = {
       jokes: hasLocalStorage ? JSON.parse(localStorage.getItem('jokes')) : [],
       alreadySeenJokeIds: [],
-      hasLoaded: hasLocalStorage,
+      loading: !hasLocalStorage,
     };
 
     this.changeRating = this.changeRating.bind(this);
@@ -35,8 +35,10 @@ class DadJokes extends Component {
   }
 
   handleClick() {
-    this.fetch10Jokes().catch((err) => {
-      console.error(err);
+    this.setState({ loading: true }, () => {
+      this.fetch10Jokes().catch((err) => {
+        console.error(err);
+      });
     });
   }
 
@@ -59,7 +61,7 @@ class DadJokes extends Component {
       (st) => ({
         jokes: [...st.jokes, ...jokes].sort((a, b) => b.rating - a.rating),
         alreadySeenJokeIds: [...st.alreadySeenJokeIds, ...newIds],
-        hasLoaded: true,
+        loading: false,
       }),
       () => {
         const { jokes: newJokes } = this.state;
@@ -85,7 +87,7 @@ class DadJokes extends Component {
   }
 
   render() {
-    const { jokes, hasLoaded } = this.state;
+    const { jokes, loading } = this.state;
     const dadJokeHtml = (
       <section className="DadJokes">
         <header className="DadJokes-header">
@@ -120,7 +122,7 @@ class DadJokes extends Component {
         Loading...
       </div>
     );
-    return hasLoaded ? dadJokeHtml : loadingHtml;
+    return !loading ? dadJokeHtml : loadingHtml;
   }
 }
 
