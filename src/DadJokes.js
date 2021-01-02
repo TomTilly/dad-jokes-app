@@ -10,16 +10,27 @@ class DadJokes extends Component {
   constructor(props) {
     super(props);
 
+    const hasLocalStorage = localStorage.getItem('jokes') !== null;
     this.state = {
-      jokes: [],
+      jokes: hasLocalStorage ? JSON.parse(localStorage.getItem('jokes')) : [],
       alreadySeenJokeIds: [],
-      hasLoaded: false,
+      hasLoaded: !!hasLocalStorage,
     };
 
     this.changeRating = this.changeRating.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
+    const { jokes } = this.state;
+    if (!jokes.length) {
+      this.set10UniqueJokes().catch((err) => {
+        console.log(err);
+      });
+    }
+  }
+
+  handleClick() {
     this.set10UniqueJokes().catch((err) => {
       console.log(err);
     });
@@ -34,13 +45,14 @@ class DadJokes extends Component {
     while (i < 10) {
       const newJoke = await fetch(API_URL, options).then(checkStatusAndParse);
       const { id, joke } = newJoke;
-      const isUnique = !alreadySeenJokeIds.includes(id) || newIds.includes(id);
+      const isUnique = !alreadySeenJokeIds.includes(id) && !newIds.includes(id);
       if (isUnique) {
         i += 1;
         jokes.push({ id, joke, rating: 0 });
         newIds.push(id);
       }
     }
+    localStorage.setItem('jokes', JSON.stringify(jokes));
     this.setState((st) => ({
       jokes,
       alreadySeenJokeIds: [...st.alreadySeenJokeIds, ...newIds],
@@ -56,8 +68,10 @@ class DadJokes extends Component {
         }
         return joke;
       });
+      const sortedJokes = updatedJokes.sort((a, b) => b.rating - a.rating);
+      localStorage.setItem('jokes', JSON.stringify(sortedJokes));
       return {
-        jokes: updatedJokes,
+        jokes: sortedJokes,
       };
     });
   }
@@ -71,7 +85,11 @@ class DadJokes extends Component {
             <span>Dad</span> Jokes
           </h1>
           <img className="DadJokes-headerEmoji" src={joy} alt="Joy Emoji" />
-          <button className="DadJokes-fetchBtn" type="button">
+          <button
+            className="DadJokes-fetchBtn"
+            type="button"
+            onClick={this.handleClick}
+          >
             Fetch Jokes
           </button>
         </header>
