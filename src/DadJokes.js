@@ -17,10 +17,11 @@ class DadJokes extends Component {
     const hasLocalStorage = localStorage.getItem('jokes') !== null;
     this.state = {
       jokes: hasLocalStorage ? JSON.parse(localStorage.getItem('jokes')) : [],
-      alreadySeenJokeIds: [],
       loading: !hasLocalStorage,
     };
 
+    const { jokes } = this.state;
+    this.seenJokeIds = new Set(jokes.map((j) => j.id));
     this.changeRating = this.changeRating.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -45,22 +46,22 @@ class DadJokes extends Component {
   async fetch10Jokes() {
     const options = { headers: { Accept: 'application/json' } };
     const jokes = [];
-    const newIds = [];
     const { alreadySeenJokeIds } = this.state;
     const { numJokesToGet } = this.props;
     while (jokes.length < numJokesToGet) {
       const newJoke = await fetch(API_URL, options).then(checkStatusAndParse);
       const { id, joke } = newJoke;
-      const isUnique = !alreadySeenJokeIds.includes(id) && !newIds.includes(id);
+      const isUnique = !this.seenJokeIds.has(id);
       if (isUnique) {
         jokes.push({ id, joke, rating: 0 });
-        newIds.push(id);
+        this.seenJokeIds.add(id);
+      } else {
+        console.log('Duplicate: ', joke, id);
       }
     }
     this.setState(
       (st) => ({
         jokes: [...st.jokes, ...jokes].sort((a, b) => b.rating - a.rating),
-        alreadySeenJokeIds: [...st.alreadySeenJokeIds, ...newIds],
         loading: false,
       }),
       () => {
