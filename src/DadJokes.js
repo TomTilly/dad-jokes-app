@@ -27,7 +27,7 @@ class DadJokes extends Component {
 
   componentDidMount() {
     const { jokes } = this.state;
-    if (!jokes.length) {
+    if (jokes.length === 0) {
       this.set10UniqueJokes().catch((err) => {
         console.log(err);
       });
